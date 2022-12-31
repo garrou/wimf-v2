@@ -7,20 +7,19 @@ dotenv.config();
 passport.use(new GoogleStrategy.Strategy({
     clientID:     process.env.GOOGLE_ID,
     clientSecret: process.env.GOOGLE_SECRET,
-    callbackURL: "http://localhost:8080/auth/google/callback",
-    passReqToCallback   : true
-  },
-  function(request, accessToken, refreshToken, profile, done) {
+    callbackURL: "http://localhost:8080/api/auth/google/callback",
+    passReqToCallback: true
+  }, (_, __, ___, profile, done) => {
     return done(null, profile);
   }
 ));
 
 passport.serializeUser((user, done) => {
-    done(null, user);
+  done(null, user);
 });
 
 passport.deserializeUser((user, done) => {
-    done(null, user);
+  done(null, user);
 });
 
 export default passport;
