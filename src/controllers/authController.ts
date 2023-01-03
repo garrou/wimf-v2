@@ -1,17 +1,12 @@
-import { Router, Request, Response } from 'express';
-import { getGoogleAuthURL, getGoogleUser } from '../helpers/googleAuth.js';
+import { Router } from 'express';
+import { renderAuth, getGoogleAuthUrl, googleCallback } from '../services/authService.js';
 
 const router = Router();
 
-router.get('/google', (_: Request, res: Response) => {
-    res.redirect(getGoogleAuthURL());
-});
+router.get('/', renderAuth);
 
-router.get('/google/callback', async (req: Request, res: Response) => {
-    const code: string = req.query.code;
-    const user = await getGoogleUser({ code: code });
-    const json = await user.json();
-    return res.status(200).json(json);
-});
+router.get('/google', getGoogleAuthUrl);
+
+router.get('/google/callback', googleCallback);
 
 export default router;

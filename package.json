@@ -1,7 +1,7 @@
 {
-  "name": "wimf-web",
+  "name": "wimf-v2",
   "version": "1.0.0",
-  "description": "",
+  "description": "What's In My Freezer V2",
   "main": "index.js",
   "type": "module",
   "scripts": {
@@ -15,10 +15,12 @@
     "typescript": "^4.9.4"
   },
   "dependencies": {
+    "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.3",
+    "ejs": "^3.1.8",
     "express": "^4.18.2",
-    "googleapis": "^110.0.0",
-    "jsonwebtoken": "^9.0.0",
-    "node-fetch": "^3.3.0"
+    "google-auth-library": "^8.7.0",
+    "node-fetch": "^3.3.0",
+    "pg": "^8.8.0"
   }
 }

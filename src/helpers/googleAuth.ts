@@ -1,16 +1,17 @@
 import dotenv from 'dotenv';
 import fetch from 'node-fetch';
-import { google } from 'googleapis';
+import { OAuth2Client } from 'google-auth-library';
+import { Request, Response } from 'express';
 
 dotenv.config();
 
-const oauth2Client = new google.auth.OAuth2(
+const oauth2Client = new OAuth2Client(
     process.env.GOOGLE_ID,
     process.env.GOOGLE_SECRET,
-    'http://localhost:8080/api/auth/google/callback'
+    process.env.GOOGLE_CALLBACK
 );
 
-const getGoogleAuthURL = (): string => {
+const generateGoogleAuthUrl = (): string => {
     const scopes = [
         'https://www.googleapis.com/auth/userinfo.profile',
         'https://www.googleapis.com/auth/userinfo.email',
@@ -23,28 +24,43 @@ const getGoogleAuthURL = (): string => {
     });
 };
 
-const getGoogleUser = async ({ code }) => {
-    const { tokens } = await oauth2Client.getToken(code);
-
+const getUser = async (accessToken: string): Promise<any> => {
     try {
         return await fetch(
-            `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${tokens.access_token}`,
+            `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${accessToken}`,
             {
                 headers: {
-                    Authorization: `Bearer ${tokens.id_token}`,
+                    Authorization: `Bearer ${accessToken}`,
                 },
             },
         );
     } catch (err) {
-        throw new Error(err.message);
+        throw err;
+    }
+}
+
+const getGoogleUser = async (code: string): Promise<any> => {
+    const { tokens } = await oauth2Client.getToken(code);
+
+    oauth2Client.setCredentials(tokens);
+
+    try {
+        return await getUser(tokens.id_token);
+    } catch (err) {
+        throw err;
     }
 };
 
-const googleAuth = async (input) => {
-    const googleUser = await getGoogleUser({ code: input.code });
+const checkJwt = async (req: Request, res: Response, next: Function): Promise<void> => {
+    const token: string | null = req.cookies.accessToken;
 
-    // in database
-    console.log(googleUser);
+    const resp = await getUser(token);
+    
+    if (resp.code === 401 || resp.code === 403) {
+        return res.redirect('/auth');
+    }
+    req.user = await resp.json();
+    next();
 };
 
-export { getGoogleAuthURL, getGoogleUser, googleAuth };
+export { oauth2Client, generateGoogleAuthUrl, getGoogleUser, checkJwt };
