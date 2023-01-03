@@ -27,7 +27,7 @@ const googleCallback = async (req: Request, res: Response) => {
     } 
     
     res.cookie('accessToken', oauth2Client.credentials.access_token);
-    res.cookie('accessToken', oauth2Client.credentials.refresh_token);
+    res.cookie('refreshToken', oauth2Client.credentials.refresh_token);
     res.redirect('/categories');
 }
 

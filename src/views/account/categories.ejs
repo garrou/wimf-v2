@@ -1,5 +1,9 @@
 <%- include('../layouts/header') -%>
 
 CATEGORIES
+
+<% if (user) { %>
+    <p><%= user.email %></p>
+<% } %>
     
 <%- include('../layouts/footer') -%>

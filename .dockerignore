@@ -1,2 +1,5 @@
 .git
-pgdata
+node_modules/
+Dockerfile
+compose.yml
+pgdata/

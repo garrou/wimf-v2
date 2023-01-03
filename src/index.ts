@@ -4,7 +4,9 @@ import authController from './controllers/authController.js';
 import foodController from './controllers/categoryController.js';
 import homeController from './controllers/homeController.js';
 
-const app = express();
+const address: string = process.env.SERVER_ADDRESS;
+const port: string = process.env.SERVER_PORT;
+const app: express.Application = express();
 
 app.use(cookieParser());
 app.set('view engine', 'ejs');
@@ -14,4 +16,6 @@ app.use('/', homeController);
 app.use('/auth', authController);
 app.use('/categories', foodController);
 
-app.listen(process.env.SERVER_PORT, process.env.SERVER_ADDRESS);
+app.listen(port, address, () => {
+    console.log(`Server running : http://${address}:${port}`);
+});

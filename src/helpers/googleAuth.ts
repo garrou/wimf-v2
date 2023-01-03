@@ -51,16 +51,30 @@ const getGoogleUser = async (code: string): Promise<any> => {
     }
 };
 
-const checkJwt = async (req: Request, res: Response, next: Function): Promise<void> => {
-    const token: string | null = req.cookies.accessToken;
-
-    const resp = await getUser(token);
-    
-    if (resp.code === 401 || resp.code === 403) {
-        return res.redirect('/auth');
-    }
-    req.user = await resp.json();
-    next();
+const verify = async (token: string): Promise<any> => {
+    const ticket = await oauth2Client.verifyIdToken({
+        idToken: token,
+        audience: process.env.GOOGLE_ID,
+    });
+    const payload = ticket.getPayload();
+    return {
+        id: payload.sub,
+        email: payload.email,
+        name: payload.name,
+        picture: payload.picture
+    };
 };
+
+
+const checkJwt = async (req: Request, res: Response, next: Function): Promise<void> => {
+    let token = req.cookies.accessToken;
+
+    try {
+        req.user = await verify(token);
+        next();
+    } catch (err) {
+        res.redirect('/auth');
+    }
+}
 
 export { oauth2Client, generateGoogleAuthUrl, getGoogleUser, checkJwt };
