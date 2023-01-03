@@ -5,13 +5,8 @@ const Nav = () => {
     const navigate = useNavigate();
 
     const handleClick = async () => {
-        const { error } = await supabase.auth.signOut();
-
-        if (error) {
-            alert('Erreur durant la déconnexion');
-        } else {
-            navigate('/');
-        }
+        await supabase.auth.signOut();
+        navigate('/');
     }
 
     return (

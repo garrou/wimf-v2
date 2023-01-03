@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import CategoryTile from "../../components/CategoryTile";
+import Error from "../../components/Error";
 import Nav from "../../components/Nav";
 import Title from "../../components/Title";
 import supabase from "../../config/supabaseClient";
@@ -8,9 +10,8 @@ const Categories = () => {
     const [categories, setCategories] = useState([]);
 
     useEffect(() => {
-        
+
         (async () => {
-            
             const { data, error } = await supabase.from('categories')
                 .select('id, name, image')
                 .order('id');
@@ -27,6 +28,12 @@ const Categories = () => {
         <>
             <Nav />
             <Title title='Catégories' />
+
+            {error && <Error message={error} />}
+
+            <table className="table">
+                {categories.map(c => <CategoryTile key={c.id} id={c.id} name={c.name} image={c.image} />)}
+            </table>
         </>
     );
 }
