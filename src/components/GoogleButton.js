@@ -8,7 +8,6 @@ const GoogleButton = () => {
 
     return (
         <>
-            <img src="google.png" alt="Google logo"></img>
             <button className="btn btn-primary" onClick={handleClick}>Se connecter avec Google</button>
         </>
     );

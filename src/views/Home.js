@@ -5,9 +5,10 @@ import { useNavigate } from "react-router-dom";
 const Home = () => {
     const navigate = useNavigate();
 
-    supabase.auth.onAuthStateChange(async (event) => {
+    supabase.auth.onAuthStateChange(async (event, session) => {
+        console.log(event, session)
         if (event !== "SIGNED_OUT") {
-            navigate('/categories');
+            navigate('/account');
         } else {
             navigate('/');
         }
