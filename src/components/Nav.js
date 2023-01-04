@@ -5,7 +5,8 @@ const Nav = () => {
     const navigate = useNavigate();
 
     const handleClick = async () => {
-        await supabase.auth.signOut();
+        const { error } = await supabase.auth.signOut();
+        console.log(error);
         navigate('/');
     }
 

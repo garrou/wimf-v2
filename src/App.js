@@ -3,6 +3,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import Redirect from "./components/Redirect";
 import Home from "./views/Home";
 import Categories from "./views/user/Categories";
+import CategoryFood from "./views/user/CategoryFoods";
 import Foods from "./views/user/Foods";
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
           <Route path="/" element={<Redirect><Home /></Redirect>} />
 
           <Route path="/categories" element={<PrivateRoute><Categories /></PrivateRoute>} />
+          <Route path="/categories/:id" element={<PrivateRoute><CategoryFood /></PrivateRoute>} />
           <Route path="/foods" element={<PrivateRoute><Foods /></PrivateRoute>} />
         </Routes>
       </BrowserRouter>
