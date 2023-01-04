@@ -27,6 +27,7 @@ const Categories = () => {
     return (
         <>
             <Nav />
+
             <Title title='Catégories' />
 
             {error && <Error message={error} />}

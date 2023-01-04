@@ -1,12 +1,12 @@
 import GoogleButton from "../components/GoogleButton";
 import supabase from "../config/supabaseClient";
 import { useNavigate } from "react-router-dom";
+import Redirect from "../components/Redirect";
 
 const Home = () => {
     const navigate = useNavigate();
 
     supabase.auth.onAuthStateChange(async (event, session) => {
-        console.log(event, session)
         if (event !== "SIGNED_OUT") {
             navigate('/account');
         } else {
@@ -16,6 +16,8 @@ const Home = () => {
 
     return (
         <>
+            <Redirect />
+
             <div className="px-5 py-5 my-5 text-center">
                 <img className="d-block mx-auto mb-4" src="logo.png" alt="" width="100" height="100" />
                 <h1 className="display-5 fw-bold">W I M F</h1>

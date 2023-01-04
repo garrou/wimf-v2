@@ -16,8 +16,6 @@ const CategoryFood = () => {
         (async () => {
             const { data: { user } } = await supabase.auth.getUser();
 
-            console.log(user);
-
             const { data, error } = await supabase.from('foods')
                 .select('id, name, quantity, details')
                 .match({ cid: id, uid: user.id })
@@ -34,7 +32,6 @@ const CategoryFood = () => {
     return (
         <>
             <Nav />
-
             <Title title='Aliments' />
 
             {error && <Error message={error} />}

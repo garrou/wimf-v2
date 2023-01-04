@@ -1,12 +1,11 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import PrivateRoute from "./components/PrivateRoute";
-import Redirect from "./components/Redirect";
 import Home from "./views/Home";
 import Account from "./views/user/Account";
 import Categories from "./views/user/Categories";
 import CategoryFood from "./views/user/CategoryFoods";
 import FoodDetails from "./views/user/FoodDetails";
 import Foods from "./views/user/Foods";
+import Nav from "./components/Nav";
 
 function App() {
   return (

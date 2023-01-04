@@ -2,7 +2,7 @@ import Nav from "../../components/Nav";
 import Title from "../../components/Title";
 
 const Foods = () => {
-    
+
 
     return (
         <>

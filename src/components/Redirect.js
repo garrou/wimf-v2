@@ -1,12 +1,19 @@
-import { useEffect } from 'react';
-import { Navigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import supabase from "../config/supabaseClient";
 
-const Redirect = ({ children }) => {
+const Redirect = () => {
+    const navigate = useNavigate();
+
     useEffect(() => {
         (async () => {
-            const { data: { user } } = await supabase.auth.getUser();
-            return !user ? children : <Navigate to="/categories" replace={true} />
+            const { data } = await supabase.auth.getSession();
+
+            if (data && data.session) {
+                navigate('/account', { replace: true });
+            } else {
+                navigate('/', { replace: true });
+            }
         })();
     }, []);
 }
