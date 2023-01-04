@@ -1,10 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
 import supabase from "../config/supabaseClient";
-import Redirect from "./Redirect";
+import Guard from "./Guard";
 
 const Nav = () => {
     const navigate = useNavigate();
-    
+        
     const handleClick = async () => {
         await supabase.auth.signOut();
         navigate('/');
@@ -12,7 +12,7 @@ const Nav = () => {
 
     return (
         <>
-            <Redirect />
+            <Guard />
 
             <nav className="navbar navbar-expand-lg bg-light">
                 <div className="container-fluid">
@@ -30,6 +30,9 @@ const Nav = () => {
                             </li>
                             <li className="nav-item">
                                 <Link className="nav-link" to="/foods">Aliments</Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link className="nav-link" to="/foods/add">Ajouter</Link>
                             </li>
                             <li className="nav-item">
                                 <Link className="nav-link" onClick={handleClick}>Se déconnecter</Link>

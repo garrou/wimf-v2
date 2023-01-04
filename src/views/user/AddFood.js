@@ -1,66 +1,49 @@
 import Nav from "../../components/Nav";
-import Error from "../../components/Error";
-import { useParams, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import supabase from "../../config/supabaseClient";
 import Title from "../../components/Title";
+import Error from "../../components/Error";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import supabase from "../../config/supabaseClient";
 
-const FoodDetails = () => {
-    const navigate = useNavigate();
-    const { id } = useParams();
-
-    const [error, setError] = useState(null);
+const AddFood = () => {
     const [user, setUser] = useState(null);
     const [categories, setCategories] = useState([]);
 
-    const [foodId, setFoodId] = useState(null);
     const [name, setName] = useState('');
     const [quantity, setQuantity] = useState(1);
     const [details, setDetails] = useState('');
     const [category, setCategory] = useState(1);
+
     const [formError, setFormError] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
-
         (async () => {
             const { data: { user } } = await supabase.auth.getUser();
             setUser(user);
 
-            const { data, error } = await supabase.from('foods')
-                .select('id, name, quantity, details')
-                .match({ uid: user.id, id: id })
-                .limit(1)
-                .single();
-
-            const resp = await supabase.from('categories')
+            const { data } = await supabase.from('categories')
                 .select('id, name')
                 .order('id');
-            setCategories(resp.data);
 
-            if (error || resp.error) {
-                setError('Erreur durant la récupération des informations');
-            } else {
-                setFoodId(data.id);
-                setName(data.name);
-                setQuantity(data.quantity);
-                setDetails(data.details);
-                setCategory(data.category);
-            }
+            setCategories(data);
         })();
-    }, []);
+    });
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        if (name === '' || !quantity) {
+            return setFormError('Le formulaire est incomplet');
+        }
         const { error } = await supabase
             .from('foods')
-            .update({ name: name, quantity: quantity, details: details, cid: category, uid: user.id })
-            .match({ id: foodId });
+            .insert({ name: name, quantity: quantity, details: details, cid: category, uid: user.id });
 
         if (error) {
-            setFormError('Erreur durant la modification');
+            setFormError("Erreur durant l'ajout");
         } else {
-            navigate(-1);
+            navigate('/foods');
         }
     }
 
@@ -68,9 +51,7 @@ const FoodDetails = () => {
         <>
             <Nav />
 
-            {error && <Error message={error} />}
-
-            <Title title={name} />
+            <Title title="Ajouter un aliment" />
 
             <form onSubmit={handleSubmit}>
                 <div className="form-floating mb-2">
@@ -88,7 +69,7 @@ const FoodDetails = () => {
                     <label htmlFor="floatingInput">Détails</label>
                 </div>
 
-                <select className="form-select" aria-label="Catégories" onChange={e => setCategory(e.target.value)} value={category}>
+                <select className="form-select" aria-label="Catégories" onChange={e => setCategory(e.target.value)}>
                     {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                 </select>
 
@@ -100,4 +81,4 @@ const FoodDetails = () => {
     );
 }
 
-export default FoodDetails;
+export default AddFood;

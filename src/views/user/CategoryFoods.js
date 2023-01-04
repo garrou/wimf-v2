@@ -15,7 +15,6 @@ const CategoryFood = () => {
 
         (async () => {
             const { data: { user } } = await supabase.auth.getUser();
-
             const { data, error } = await supabase.from('foods')
                 .select('id, name, quantity, details')
                 .match({ cid: id, uid: user.id })
@@ -37,7 +36,9 @@ const CategoryFood = () => {
             {error && <Error message={error} />}
 
             <table className="table table-striped">
-                {foods.map(f => <FoodTile key={f.id} id={f.id} name={f.name} quantity={f.quantity} />)}
+                <tbody>
+                    {foods.map(f => <FoodTile key={f.id} id={f.id} name={f.name} quantity={f.quantity} />)}
+                </tbody>
             </table>
         </>
     );

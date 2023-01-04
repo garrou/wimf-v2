@@ -16,7 +16,7 @@ const Account = () => {
         <>
             <Nav />
             
-            {user && <p>{user.id}</p>}
+            {user && <p>{user.email}</p>}
         </>
     );
 }

@@ -32,7 +32,7 @@ const Categories = () => {
 
             {error && <Error message={error} />}
 
-            <table className="table table-bordered">
+            <table className="table table-striped">
                 <tbody>
                     {categories.map(c => <CategoryTile key={c.id} id={c.id} name={c.name} image={c.image} />)}
                 </tbody>

@@ -3,10 +3,10 @@ const CategoryTile = (props) => {
         <tr>
             <td>
                 <a href={`/categories/${props.id}`}>
-                    <img src={props.image} className="img-fluid my-2" width="100" height="100" alt="Logo de la catégorie" />
+                    <img src={props.image} className="img-fluid my-2" width="50" height="50" alt="Logo de la catégorie" />
                 </a>
             </td>
-            <td>
+            <td class="align-middle">
                 <a href={`/categories/${props.id}`}>{props.name}</a>
             </td>
         </tr>
