@@ -9,21 +9,31 @@ import supabase from "../../config/supabaseClient";
 const CategoryFood = () => {
     const [error, setError] = useState(null);
     const [foods, setFoods] = useState([]);
+    const [category, setCategory] = useState(null);
     const { id } = useParams();
 
     useEffect(() => {
 
         (async () => {
             const { data: { user } } = await supabase.auth.getUser();
-            const { data, error } = await supabase.from('foods')
+            const { data, error } = await supabase
+                .from('foods')
                 .select('id, name, quantity, details')
                 .match({ cid: id, uid: user.id })
                 .order('id');
 
-            if (error) {
-                setError('Erreur durant la récupération des aliments');
+            const resp = await supabase
+                .from('categories')
+                .select('name')
+                .match({ id: id })
+                .limit(1)
+                .single();
+
+            if (error || resp.error) {
+                setError('Erreur durant la récupération des données');
             } else {
                 setFoods(data);
+                setCategory(resp.data.name);
             }
         })();
     }, []);
@@ -31,15 +41,19 @@ const CategoryFood = () => {
     return (
         <>
             <Nav />
-            <Title title='Aliments' />
+            <Title title={category} />
 
             {error && <Error message={error} />}
 
-            <table className="table table-striped">
+            {!error && <table className="table table-striped">
                 <tbody>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Quantité</th>
+                    </tr>
                     {foods.map(f => <FoodTile key={f.id} id={f.id} name={f.name} quantity={f.quantity} />)}
                 </tbody>
-            </table>
+            </table>}
         </>
     );
 }

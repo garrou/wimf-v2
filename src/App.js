@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./views/Home";
-import Account from "./views/user/Account";
 import Categories from "./views/user/Categories";
 import CategoryFood from "./views/user/CategoryFoods";
 import FoodDetails from "./views/user/FoodDetails";
@@ -15,7 +14,6 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
 
-          <Route path="/account" element={<Account />} />
           <Route path="/categories" element={<Categories />} />
           <Route path="/categories/:id" element={<CategoryFood />} />
           <Route path="/foods" element={<Foods />} />

@@ -4,6 +4,7 @@ import Error from "../../components/Error";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import supabase from "../../config/supabaseClient";
+import toTitle from "../../utils/format";
 
 const AddFood = () => {
     const [user, setUser] = useState(null);
@@ -20,12 +21,13 @@ const AddFood = () => {
     useEffect(() => {
         (async () => {
             const { data: { user } } = await supabase.auth.getUser();
-            setUser(user);
-
-            const { data } = await supabase.from('categories')
+            
+            const { data } = await supabase
+                .from('categories')
                 .select('id, name')
                 .order('id');
 
+            setUser(user);
             setCategories(data);
         })();
     });
@@ -33,15 +35,15 @@ const AddFood = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (name === '' || !quantity) {
+        if (name === '' || !quantity || parseInt(quantity) < 1) {
             return setFormError('Le formulaire est incomplet');
         }
         const { error } = await supabase
             .from('foods')
-            .insert({ name: name, quantity: quantity, details: details, cid: category, uid: user.id });
+            .insert({ name: toTitle(name), quantity: parseInt(quantity), details: details, cid: category, uid: user.id });
 
         if (error) {
-            setFormError("Erreur durant l'ajout");
+            setFormError("Erreur durant l'enregistrement");
         } else {
             navigate('/foods');
         }

@@ -1,10 +1,7 @@
 import GoogleButton from "../components/GoogleButton";
-import supabase from "../config/supabaseClient";
-import { useNavigate } from "react-router-dom";
 import Redirect from "../components/Redirect";
 
 const Home = () => {
-    const navigate = useNavigate();
 
     return (
         <>

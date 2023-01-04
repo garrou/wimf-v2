@@ -10,7 +10,7 @@ const Redirect = () => {
             const { data } = await supabase.auth.getSession();
 
             if (data && data.session) {
-                navigate('/account', { replace: true });
+                navigate('/categories', { replace: true });
             } else {
                 navigate('/', { replace: true });
             }

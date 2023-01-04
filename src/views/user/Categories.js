@@ -10,14 +10,14 @@ const Categories = () => {
     const [categories, setCategories] = useState([]);
 
     useEffect(() => {
-
         (async () => {
-            const { data, error } = await supabase.from('categories')
+            const { data, error } = await supabase
+                .from('categories')
                 .select('id, name, image')
                 .order('id');
 
             if (error) {
-                setError('Erreur durant la récupération des catégories');
+                setError('Erreur durant la récupération des données');
             } else {
                 setCategories(data);
             }
@@ -32,11 +32,11 @@ const Categories = () => {
 
             {error && <Error message={error} />}
 
-            <table className="table table-striped">
+            {!error && <table className="table table-striped">
                 <tbody>
                     {categories.map(c => <CategoryTile key={c.id} id={c.id} name={c.name} image={c.image} />)}
                 </tbody>
-            </table>
+            </table>}
         </>
     );
 }

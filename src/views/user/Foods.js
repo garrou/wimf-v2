@@ -10,16 +10,16 @@ const Foods = () => {
     const [foods, setFoods] = useState([]);
 
     useEffect(() => {
-
         (async () => {
             const { data: { user } } = await supabase.auth.getUser();
-            const { data, error } = await supabase.from('foods')
+
+            const { data, error } = await supabase
+                .from('foods')
                 .select('id, name, quantity, details')
-                .match({ uid: user.id })
-                .order('id');
+                .match({ uid: user.id });
 
             if (error) {
-                setError('Erreur durant la récupération des aliments');
+                setError('Erreur durant la récupération des données');
             } else {
                 setFoods(data);
             }
@@ -34,15 +34,15 @@ const Foods = () => {
 
             {error && <Error message={error} />}
 
-            <table className="table table-striped">
-                <tr>
-                    <th>Nom</th>
-                    <th>Quantité</th>
-                </tr>
+            {!error && <table className="table table-striped">
                 <tbody>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Quantité</th>
+                    </tr>
                     {foods.map(f => <FoodTile key={f.id} id={f.id} name={f.name} quantity={f.quantity} />)}
                 </tbody>
-            </table>
+            </table>}
         </>
     );
 }
