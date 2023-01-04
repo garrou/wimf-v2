@@ -6,7 +6,7 @@ import Redirect from "../components/Redirect";
 const Home = () => {
     const navigate = useNavigate();
 
-    supabase.auth.onAuthStateChange(async (event, session) => {
+    supabase.auth.onAuthStateChange(async (event) => {
         if (event !== "SIGNED_OUT") {
             navigate('/account');
         } else {

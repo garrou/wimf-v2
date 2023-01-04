@@ -1,6 +1,6 @@
 import supabase from "../config/supabaseClient";
 
-const GoogleButton = () => {
+const GoogleAuth = () => {
 
     const handleClick = async () => {
         await supabase.auth.signInWithOAuth({ provider: 'google' });
@@ -8,9 +8,12 @@ const GoogleButton = () => {
 
     return (
         <>
-            <button className="btn btn-primary" onClick={handleClick}>Se connecter avec Google</button>
+            <button onClick={handleClick} className="btn btn-primary">
+                <img src="google.png" alt="Logo Google" width="25" height="25" />
+                &nbsp;Se connecter avec Google
+            </button>
         </>
     );
 }
 
-export default GoogleButton;
+export default GoogleAuth;
