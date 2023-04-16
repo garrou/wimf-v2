@@ -1,10 +1,11 @@
+import { Container } from "react-bootstrap";
 import GoogleButton from "../components/GoogleButton";
 import Redirect from "../components/Redirect";
 
 const Home = () => {
 
     return (
-        <>
+        <Container>
             <Redirect />
 
             <div className="px-5 py-5 my-5 text-center">
@@ -17,7 +18,7 @@ const Home = () => {
                     </div>
                 </div>
             </div>
-        </>
+        </Container>
     );
 }
 

@@ -1,20 +1,15 @@
-import Nav from "../../components/Nav";
+import Navigation from "../../components/Navigation";
 import Title from "../../components/Title";
 import Error from "../../components/Error";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import supabase from "../../config/supabaseClient";
 import toTitle from "../../utils/format";
+import { Button, Container, Form } from "react-bootstrap";
 
 const AddFood = () => {
     const [user, setUser] = useState(null);
     const [categories, setCategories] = useState([]);
-
-    const [name, setName] = useState('');
-    const [quantity, setQuantity] = useState(1);
-    const [details, setDetails] = useState('');
-    const [category, setCategory] = useState(1);
-
     const [formError, setFormError] = useState(null);
     const navigate = useNavigate();
 
@@ -30,56 +25,60 @@ const AddFood = () => {
             setUser(user);
             setCategories(data);
         })();
-    });
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (name === '' || !quantity || parseInt(quantity) < 1) {
+        const name = e.target.name.value;
+        const quantity = e.target.quantity.value;
+        const details = e.target.details.value;
+        const category = e.target.category.value;
+
+        if (name === '' || !quantity || parseInt(quantity) < 1 || !category) {
             return setFormError('Le formulaire est incomplet');
         }
         const { error } = await supabase
             .from('foods')
             .insert({ name: toTitle(name), quantity: parseInt(quantity), details: details, cid: category, uid: user.id });
 
-        if (error) {
-            setFormError("Erreur durant l'enregistrement");
-        } else {
-            navigate('/foods');
-        }
+        error ? setFormError("Erreur durant l'enregistrement") : navigate('/foods');
     }
 
     return (
-        <>
-            <Nav />
+        <Container>
+            <Navigation url={'/foods/add'} />
 
             <Title title="Ajouter un aliment" />
 
-            <form onSubmit={handleSubmit}>
-                <div className="form-floating mb-2">
-                    <input type="text" value={name} className="form-control" onChange={e => setName(e.target.value)} required />
-                    <label htmlFor="floatingInput">Nom</label>
-                </div>
+            <Form onSubmit={handleSubmit}>
+                <Form.Group className="mb-2" controlId="name">
+                    <Form.Label>Nom</Form.Label>
+                    <Form.Control type="text" placeholder="Nom" required />
+                </Form.Group>
 
-                <div className="form-floating mb-2">
-                    <input type="number" step="1" min="1" value={quantity} className="form-control" onChange={e => setQuantity(e.target.value)} required />
-                    <label htmlFor="floatingInput">Quantité</label>
-                </div>
+                <Form.Group className="mb-2" controlId="quantity">
+                    <Form.Label>Quantité</Form.Label>
+                    <Form.Control type="number" step="1" min="1" required />
+                </Form.Group>
 
-                <div className="form-floating mb-2">
-                    <textarea value={details} className="form-control" onChange={e => setDetails(e.target.value)} rows="4" />
-                    <label htmlFor="floatingInput">Détails</label>
-                </div>
+                <Form.Group className="mb-2" controlId="details">
+                    <Form.Label>Détails</Form.Label>
+                    <Form.Control type="textarea" rows="4" />
+                </Form.Group>
 
-                <select className="form-select" aria-label="Catégories" onChange={e => setCategory(e.target.value)}>
-                    {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
-                </select>
+                <Form.Group className="mb-2" controlId="category">
+                    <Form.Label>Catégories</Form.Label>
+                    <Form.Select aria-label="Catégories">
+                        {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                    </Form.Select>
+                </Form.Group>
 
-                <button className="btn btn-primary my-2" type="submit">Ajouter</button>
+                <Button className="btn btn-primary my-2" type="submit">Ajouter</Button>
 
                 {formError && <Error message={formError} />}
-            </form>
-        </>
+            </Form>
+        </Container>
     );
 }
 

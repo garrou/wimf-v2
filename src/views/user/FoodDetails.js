@@ -1,10 +1,11 @@
-import Nav from "../../components/Nav";
+import Navigation from "../../components/Navigation";
 import Error from "../../components/Error";
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import supabase from "../../config/supabaseClient";
 import Title from "../../components/Title";
 import toTitle from "../../utils/format";
+import { Button, Container, Form } from "react-bootstrap";
 
 const FoodDetails = () => {
     const navigate = useNavigate();
@@ -13,7 +14,6 @@ const FoodDetails = () => {
     const [error, setError] = useState(null);
     const [user, setUser] = useState(null);
     const [categories, setCategories] = useState([]);
-
     const [foodId, setFoodId] = useState(null);
     const [name, setName] = useState('');
     const [quantity, setQuantity] = useState(1);
@@ -39,11 +39,11 @@ const FoodDetails = () => {
                 .order('id');
 
             setUser(user);
-            setCategories(resp.data);
 
             if (error || resp.error) {
                 setError('Erreur durant la récupération des données');
             } else {
+                setCategories(resp.data);
                 setFoodId(data.id);
                 setName(data.name);
                 setQuantity(data.quantity);
@@ -56,7 +56,7 @@ const FoodDetails = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (name === '' || !quantity || parseInt(quantity) < 1) {
+        if (name === '' || !quantity || parseInt(quantity) < 1 || !category) {
             return setFormError('Le formulaire est incomplet');
         }
         const { error } = await supabase
@@ -64,11 +64,7 @@ const FoodDetails = () => {
             .update({ name: toTitle(name), quantity: parseInt(quantity), details: details, cid: category, uid: user.id })
             .match({ id: foodId });
 
-        if (error) {
-            setFormError('Erreur durant la modification');
-        } else {
-            navigate(-1);
-        }
+        error ? setFormError('Erreur durant la modification') : navigate(-1);
     }
 
     const handleDelete = async () => {
@@ -79,49 +75,51 @@ const FoodDetails = () => {
                 .delete()
                 .match({ id: foodId });
 
-            if (error) {
-                setFormError('Erreur durant la suppression');
-            } else {
-                navigate(-1);
-            }
+            error ? setFormError('Erreur durant la suppression') : navigate(-1);
         }
     }
 
     return (
-        <>
-            <Nav />
+        <Container>
+            <Navigation url={'/foods'} />
 
             {error && <Error message={error} />}
 
-            <Title title={name} />
+            {!error && <>
 
-            {!error && <form onSubmit={handleSubmit}>
-                <div className="form-floating mb-2">
-                    <input type="text" value={name} className="form-control" onChange={e => setName(e.target.value)} required />
-                    <label htmlFor="floatingInput">Nom</label>
-                </div>
+                <Title title={name} />
 
-                <div className="form-floating mb-2">
-                    <input type="number" step="1" min="1" value={quantity} className="form-control" onChange={e => setQuantity(e.target.value)} required />
-                    <label htmlFor="floatingInput">Quantité</label>
-                </div>
+                <Form onSubmit={handleSubmit}>
+                    <Form.Group className="mb-2" controlId="name">
+                        <Form.Label>Nom</Form.Label>
+                        <Form.Control type="text" placeholder="Nom" value={name} onChange={e => setName(e.target.value)} required />
+                    </Form.Group>
 
-                <div className="form-floating mb-2">
-                    <textarea value={details} className="form-control" onChange={e => setDetails(e.target.value)} rows="4" />
-                    <label htmlFor="floatingInput">Détails</label>
-                </div>
+                    <Form.Group className="mb-2" controlId="quantity">
+                        <Form.Label>Quantité</Form.Label>
+                        <Form.Control type="number" step="1" min="1" value={quantity} onChange={e => setQuantity(e.target.value)} required />
+                    </Form.Group>
 
-                <select className="form-select" aria-label="Catégories" value={category} onChange={e => setCategory(e.target.value)}>
-                    {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
-                </select>
+                    <Form.Group className="mb-2" controlId="details">
+                        <Form.Label>Détails</Form.Label>
+                        <Form.Control type="textarea" rows="4" value={details} onChange={e => setDetails(e.target.value)} />
+                    </Form.Group>
 
-                <button className="btn btn-primary my-2" type="submit">Enregistrer</button>
+                    <Form.Group className="mb-2" controlId="category">
+                        <Form.Label>Catégories</Form.Label>
+                        <Form.Select aria-label="Catégories" value={category} onChange={e => setCategory(e.target.value)}>
+                            {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                        </Form.Select>
+                    </Form.Group>
 
-                {formError && <Error message={formError} />}
-            </form>}
+                    <Button className="btn btn-primary my-2" type="submit">Enregistrer</Button>
 
-            <button className="btn btn-danger my-2" onClick={handleDelete}>Supprimer</button>
-        </>
+                    {formError && <Error message={formError} />}
+                </Form>
+
+                <Button className="btn btn-danger my-2" onClick={handleDelete}>Supprimer</Button>
+            </>}
+        </Container>
     );
 }
 

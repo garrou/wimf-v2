@@ -1,9 +1,10 @@
 import FoodTile from "../../components/FoodTile";
-import Nav from "../../components/Nav";
+import Navigation from "../../components/Navigation";
 import Title from "../../components/Title";
 import Error from "../../components/Error";
 import { useState, useEffect } from "react";
 import supabase from "../../config/supabaseClient";
+import { Container, Table } from "react-bootstrap";
 
 const Foods = () => {
     const [error, setError] = useState(null);
@@ -27,14 +28,14 @@ const Foods = () => {
     }, []);
 
     return (
-        <>
-            <Nav />
+        <Container>
+            <Navigation url={'/foods'} />
 
             <Title title='Aliments' />
 
             {error && <Error message={error} />}
 
-            {!error && <table className="table table-striped">
+            {!error && <Table striped>
                 <tbody>
                     <tr>
                         <th>Nom</th>
@@ -42,8 +43,8 @@ const Foods = () => {
                     </tr>
                     {foods.map(f => <FoodTile key={f.id} id={f.id} name={f.name} quantity={f.quantity} />)}
                 </tbody>
-            </table>}
-        </>
+            </Table>}
+        </Container>
     );
 }
 

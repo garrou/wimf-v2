@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import CategoryTile from "../../components/CategoryTile";
 import Error from "../../components/Error";
-import Nav from "../../components/Nav";
+import Navigation from "../../components/Navigation";
 import Title from "../../components/Title";
 import supabase from "../../config/supabaseClient";
+import { Container, Table } from "react-bootstrap";
 
 const Categories = () => {
     const [error, setError] = useState(null);
@@ -16,28 +17,24 @@ const Categories = () => {
                 .select('id, name, image')
                 .order('id');
 
-            if (error) {
-                setError('Erreur durant la récupération des données');
-            } else {
-                setCategories(data);
-            }
+            error ? setError('Erreur durant la récupération des données') : setCategories(data);
         })();
     }, []);
 
     return (
-        <>
-            <Nav />
+        <Container>
+            <Navigation url={'/categories'} />
 
             <Title title='Catégories' />
 
             {error && <Error message={error} />}
 
-            {!error && <table className="table table-striped">
+            {!error && <Table striped>
                 <tbody>
                     {categories.map(c => <CategoryTile key={c.id} id={c.id} name={c.name} image={c.image} />)}
                 </tbody>
-            </table>}
-        </>
+            </Table>}
+        </Container>
     );
 }
 
