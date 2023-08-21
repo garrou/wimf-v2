@@ -4,16 +4,11 @@ namespace App;
 
 use PDO;
 
-class Connection
-{  
-    /**
-     * Return a pdo connection
-     *
-     * @return PDO
-     */
+class Connection {
+    
     public static function getPDO(): PDO
     {
-        return new PDO('pgsql:dbname=wimf;host=127.0.0.1', 'admin', 'admin', [
+        return new PDO('pgsql:dbname=wimf;host=localhost;port=5432', 'postgres', 'admin', [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
         ]);
     }

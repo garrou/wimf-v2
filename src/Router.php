@@ -9,62 +9,35 @@ class Router
 {
     private string $view_path;
 
-    public string $layout = 'layout/home';
+    public string $layout;
 
-    /**
-     * @var AltoRouter
-     */
-    private $router;
+    private AltoRouter $router;
 
-    /**
-     * @param  string $view_path path the the view folder
-     * @return void
-     */
     public function __construct(string $view_path)
     {
         $this->view_path = $view_path;
         $this->router = new AltoRouter();
+        $this->layout = 'layout/home';
     }
 
-    /**
-     * @param  string $url in web page
-     * @param  string $view path to the view folder
-     * @param  string $name name of path
-     * @return self fluent method
-     */
     public function get(string $url, string $view, ?string $name = null): self
     {
         $this->router->map('GET', $url, $view, $name);
         return $this;
     }
     
-    /**
-     * @param  string $url in web page
-     * @param  string $view path to the view folder
-     * @param  string $name of path
-     * @return self fluent method
-     */
     public function post(string $url, string $view, ?string $name = null): self
     {
         $this->router->map('POST', $url, $view, $name);
         return $this;
     }
     
-    /**
-     * @param  string $url in web page
-     * @param  string $view path to view folder
-     * @param  string $name url name
-     * @return self fluent method
-     */
     public function match(string $url, string $view, ?string $name = null): self
     {
         $this->router->map('POST|GET', $url, $view, $name);
         return $this;
     }
     
-    /**
-     * @return self
-     */
     public function run(): self
     {
         $match = $this->router->match();
@@ -96,11 +69,6 @@ class Router
         return $this;
     }
     
-    /**
-     * @param  string $name name of url
-     * @param  string $params share params
-     * @return string url
-     */
     public function url(string $name, array $params = []): string
     {
         return $this->router->generate($name, $params);

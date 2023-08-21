@@ -4,12 +4,8 @@ namespace App;
 
 use App\Exceptions\ForbiddenException;
 
-class Auth
-{
+class Auth {
     
-    /**
-     * @return void
-     */
     public static function check(): void
     {
         if (session_status() === PHP_SESSION_NONE) {
@@ -20,9 +16,6 @@ class Auth
         }
     }
 
-    /**
-     * @return bool
-     */
     public static function isConnected(): bool
     {
         if (session_status() === PHP_SESSION_NONE) {
