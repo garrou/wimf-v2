@@ -9,12 +9,15 @@ abstract class Table {
 
     protected PDO $pdo;
 
-    public function __construct(PDO $pdo)
+    protected string $table;
+
+    protected mixed $class;
+
+    public function __construct(PDO $pdo, string $table, string $class)
     {
-        if ($this->table === null) {
-            throw new Exception('La classe n\'a pas de propriété table');
-        }
         $this->pdo = $pdo;
+        $this->table = $table;
+        $this->class = $class;
     }
 
     public function find(mixed $id)

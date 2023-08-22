@@ -7,30 +7,21 @@ use App\Helpers\StringHelper;
 
 class Form {
 
-    private $data;
+    private mixed $data;
 
     private array $errors;
     
-    /**
-     * @param  mixed $data
-     * @param  array $errors
-     */
-    public function __construct($data, array $errors)
+    public function __construct(mixed $data, array $errors)
     {
         $this->data = $data;
         $this->errors = $errors;
     }
     
-    /**
-     * @param  string $key key label
-     * @param  string $label input label
-     * @return string
-     */
     public function input(string $key, string $label): string
     {
         $value = $this->getValue($key);
         $required = $key === 'link' ? '' : 'required';
-        $type = $key === 'password' ? 'password' : 'text';
+        $type = $key === 'password' || 'confirm' ? 'password' : 'text';
         
         return <<<HTML
             <div class="form-group mt-3">
@@ -41,11 +32,6 @@ class Form {
         HTML;
     }
     
-    /**
-     * @param  string $key textarea name tag
-     * @param  string $label textarea label tag
-     * @return string a textarea
-     */
     public function textarea(string $key, string $label): string
     {
         $value = $this->getValue($key);
@@ -73,10 +59,6 @@ class Form {
         return $value;
     }
     
-    /**
-     * @param  string $key
-     * @return string
-     */
     private function getInputClass(string $key): string
     {
         $class = 'form-control';
@@ -87,10 +69,6 @@ class Form {
         return $class;
     }
     
-    /**
-     * @param  string $key
-     * @return string
-     */
     private function getErrorFeedback(string $key): string
     {
         if (isset($this->errors[$key])) {

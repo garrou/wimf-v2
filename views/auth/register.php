@@ -2,30 +2,30 @@
 
 use App\Auth;
 use App\Connection;
+use App\Dto\UserRegistration;
 use App\Html\Form;
-use App\Models\User;
 use App\Table\UserTable;
 use App\Validators\UserValidator;
 
 $title = 'Créer un compte';
 
-$user = new User();
+$dto = new UserRegistration();
 $errors = [];
 
 if (!empty($_POST['username']) && !empty($_POST['password']) && !empty($_POST['confirm'])) {
     $table = new UserTable(Connection::getPDO());
-    $validator = new UserValidator($_POST, $table, $user->getUsername());
+    $validator = (new UserValidator($_POST))->userRegistration($table, $dto->getUsername());
 
-    if ($_POST['password'] === $_POST['confirm'] && $validator->validate()) {
-        $table->create($user);
+    if ($validator->validate()) {
+        $table->create($dto->toUser());
         header('Location: ' . $router->url('login'));
         exit();
     } else {
-        $errors = $v->errors();
+        $errors = $validator->errors();
     }
 }
 
-$form = new Form($user, $errors);
+$form = new Form($dto, $errors);
 
 if (Auth::isConnected()) {
     header('Location: ' . $router->url('categories'));
@@ -38,7 +38,7 @@ if (Auth::isConnected()) {
     <div class="text-center">
         <?= $form->input('username', "Nom d'utilisateur"); ?>
         <?= $form->input('password', 'Mot de passe'); ?>
-        <!-- confirm -->
+        <?= $form->input('confirm', 'Confirmer le mot de passe'); ?>
     </div>
 
     <div class="text-center mt-2">

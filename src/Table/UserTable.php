@@ -8,17 +8,9 @@ use Exception;
 
 class UserTable extends Table {
 
-    private PDO $pdo;
-
-    private string $table;
-
-    private $class;
-
     public function __construct(PDO $pdo)
     {
-        $this->pdo = $pdo;
-        $this->table = "user";
-        $this->class = User::class;
+        parent::__construct($pdo, "user", User::class);
     }
 
     public function findByUsername(string $username) 
@@ -43,13 +35,12 @@ class UserTable extends Table {
         $created = $stmt->execute([
             'username' => $user->getUsername(),
             'password' => $user->getPassword(),
-            'registed_at' => $user->getRegistedAt()->format('d-m-Y')
+            'registed_at' => $user->getRegistedAt(),
         ]);
 
 
         if ($created === false) {
-            throw new Exception("Impossible de créer le post dans la table {$this->table}");
+            throw new Exception("Impossible de créer l'utilisateur'");
         }
-        $post->setID($this->pdo->lastInsertId());
     }
 }

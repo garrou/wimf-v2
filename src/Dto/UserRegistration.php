@@ -1,32 +1,22 @@
 <?php
 
-namespace App\Models;
+namespace App\Dto;
 
-class User {
+use App\Models\User;
 
-    private ?string $id;
+class UserRegistration {
 
     private ?string $username;
 
     private ?string $password;
 
-    private ?string $registedAt;
+    private ?string $confirm;
 
     public function __construct()
     {
-        $this->id = null;
         $this->username = null;
         $this->password = null;
-        $this->registedAt = null;
-    }
-
-    public static function initialize(string $username, string $password): self {
-        $instance = new self();
-        $instance->id = uniqid();
-        $instance->username = $username;
-        $instance->password = $password;
-        $instance->registedAt = date('Y-m-d');
-        return $instance;
+        $this->confirm = null;
     }
 
     public function getUsername(): ?string
@@ -51,13 +41,18 @@ class User {
         return $this;
     }
 
-    public function getId(): ?string
+    public function getConfirm(): ?string
     {
-        return $this->id;
+        return $this->confirm;
     }
 
-    public function getRegistedAt(): ?string
+    public function setConfirm(string $confirm): self
     {
-        return $this->registedAt;
+        $this->confirm = $confirm;
+        return $this;
+    }
+
+    public function toUser(): User {
+        return User::initialize($this->username, $this->password);
     }
 }
