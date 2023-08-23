@@ -19,12 +19,11 @@ if (!empty($_POST)) {
         $table = new UserTable(Connection::getPDO());
 
         try {
-            $userFound = $table->findByUsername($_POST['username']);
+            $userFound = $table->findByUsername($user->getUsername());
 
             if (password_verify($_POST['password'], $userFound->getPassword())) {
                 session_start();
                 $_SESSION['auth'] = $userFound->getID();
-
                 header('Location: ' . $router->url('admin'));
                 exit();
             }

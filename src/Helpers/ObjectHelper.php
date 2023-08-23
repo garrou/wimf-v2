@@ -2,13 +2,17 @@
 
 namespace App\Helpers;
 
-class ObjectHelper {
+class ObjectHelper
+{
 
     public static function hydrate(mixed $object, array $data, array $fields): void
     {
         foreach ($fields as $field) {
             $method = StringHelper::toCamel('set', $field);
-            $object->$method($data[$field]);
+
+            if (method_exists($object, $method)) {
+                $object->$method($data[$field]);
+            }
         }
     }
 }

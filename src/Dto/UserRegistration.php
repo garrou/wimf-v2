@@ -51,7 +51,6 @@ class UserRegistration {
         $this->confirm = $confirm;
         return $this;
     }
-
     public function toUser(): User {
         return User::initialize($this->username, $this->password);
     }

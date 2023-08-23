@@ -27,7 +27,7 @@ abstract class Table {
         $stmt->setFetchMode(PDO::FETCH_CLASS, $this->class);
         $result = $stmt->fetch();
 
-        if ($result === false) {
+        if (is_null($result->getId())) {
             throw new Exception("Aucune donnée trouvée");
         }
         return $result;

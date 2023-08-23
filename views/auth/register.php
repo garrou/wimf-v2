@@ -3,25 +3,26 @@
 use App\Auth;
 use App\Connection;
 use App\Dto\UserRegistration;
+use App\Helpers\ObjectHelper;
 use App\Html\Form;
 use App\Table\UserTable;
 use App\Validators\UserValidator;
 
 $title = 'Créer un compte';
-
 $dto = new UserRegistration();
 $errors = [];
 
 if (!empty($_POST['username']) && !empty($_POST['password']) && !empty($_POST['confirm'])) {
     $table = new UserTable(Connection::getPDO());
-    $validator = (new UserValidator($_POST))->userRegistration($table, $dto->getUsername());
+    $validator = (new UserValidator($_POST))->userRegistration($table, $_POST['username']);
 
-    if ($validator->validate()) {
+    if ($validator->getIsValid()) {
+        ObjectHelper::hydrate($dto, $_POST, ['username', 'password', 'confirm']);
         $table->create($dto->toUser());
         header('Location: ' . $router->url('login'));
         exit();
     } else {
-        $errors = $validator->errors();
+        $errors = $validator->getErrors();
     }
 }
 

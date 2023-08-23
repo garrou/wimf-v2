@@ -10,14 +10,11 @@ class User {
 
     private ?string $password;
 
-    private ?string $registedAt;
-
     public function __construct()
     {
         $this->id = null;
         $this->username = null;
         $this->password = null;
-        $this->registedAt = null;
     }
 
     public static function initialize(string $username, string $password): self {
@@ -25,7 +22,6 @@ class User {
         $instance->id = uniqid();
         $instance->username = $username;
         $instance->password = $password;
-        $instance->registedAt = date('Y-m-d');
         return $instance;
     }
 
@@ -54,10 +50,5 @@ class User {
     public function getId(): ?string
     {
         return $this->id;
-    }
-
-    public function getRegistedAt(): ?string
-    {
-        return $this->registedAt;
     }
 }
