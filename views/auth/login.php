@@ -7,27 +7,27 @@ use App\Models\User;
 use App\Table\UserTable;
 
 $title = 'Se connecter';
-
 $user = new User();
 $errors = [];
 
 if (!empty($_POST)) {
-    $user->setUsername($_POST['username']);
+    $user->setUsername($_POST['username'])->setPassword($_POST['password']);
     $errors['password'] = 'Identifiant ou mot de passe incorrect';
 
-    if (!empty($_POST['username']) && !empty($_POST['password'])) {
+    if (!empty($user->getUsername()) && !empty($user->getPassword())) {
         $table = new UserTable(Connection::getPDO());
 
         try {
             $userFound = $table->findByUsername($user->getUsername());
 
-            if (password_verify($_POST['password'], $userFound->getPassword())) {
+            if (password_verify($user->getPassword(), $userFound->getPassword())) {
                 session_start();
-                $_SESSION['auth'] = $userFound->getID();
-                header('Location: ' . $router->url('admin'));
+                $_SESSION['SESSION'] = $userFound->getID();
+                header('Location: ' . $router->url('categories'));
                 exit();
             }
         } catch (Exception $e) {
+            var_dump($e);
             $errors['password'] = 'Identifiant ou mot de passe incorrect';
         }
     }

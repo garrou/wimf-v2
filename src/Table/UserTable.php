@@ -10,17 +10,16 @@ class UserTable extends Table {
 
     public function __construct(PDO $pdo)
     {
-        parent::__construct($pdo, "users", User::class);
+        parent::__construct($pdo, 'users', User::class);
     }
 
     public function findByUsername(string $username): User
     {
         $stmt = $this->pdo->prepare("SELECT * FROM {$this->table} WHERE username = :username");
         $stmt->execute(['username' => $username]);
-        $stmt->setFetchMode(PDO::FETCH_CLASS, $this->class);
-        $result = $stmt->fetch();
+        $result = $stmt->fetchObject($this->class);
 
-        if (is_null($result->getId())) {
+        if (!$result) {
             throw new Exception("L'utilisateur n'est pas inscrit");
         }
         return $result;
@@ -30,7 +29,8 @@ class UserTable extends Table {
     {
         $stmt = $this->pdo->prepare("
             INSERT INTO {$this->table} (id, username, password)
-            VALUES (:id, :username, :password)");
+            VALUES (:id, :username, :password)
+        ");
 
         $created = $stmt->execute([
             'id' => $user->getId(),
@@ -38,9 +38,8 @@ class UserTable extends Table {
             'password' => password_hash($user->getPassword(), PASSWORD_BCRYPT),
         ]);
 
-
-        if ($created === false) {
-            throw new Exception("Impossible de créer l'utilisateur'");
+        if (!$created) {
+            throw new Exception("Impossible de créer l'utilisateur");
         }
     }
 }

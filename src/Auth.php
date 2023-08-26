@@ -11,7 +11,7 @@ class Auth {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
-        if (!isset($_SESSION['auth'])) {
+        if (!isset($_SESSION['SESSION'])) {
             throw new ForbiddenException();
         }
     }
@@ -21,6 +21,6 @@ class Auth {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
-        return isset($_SESSION['auth']);
+        return isset($_SESSION['SESSION']);
     }
 }

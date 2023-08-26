@@ -21,7 +21,7 @@ class Form {
     {
         $value = $this->getValue($key);
         $required = $key === 'link' ? '' : 'required';
-        $type = $key === 'password' || 'confirm' ? 'password' : 'text';
+        $type = $key === 'password' || $key === 'confirm' ? 'password' : 'text';
         
         return <<<HTML
             <div class="form-group mt-3">

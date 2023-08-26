@@ -27,15 +27,15 @@ abstract class Table {
         $stmt->setFetchMode(PDO::FETCH_CLASS, $this->class);
         $result = $stmt->fetch();
 
-        if (is_null($result->getId())) {
+        if (!$result) {
             throw new Exception("Aucune donnée trouvée");
         }
         return $result;
     }
 
-    public function exists(string $field, mixed $value, mixed $except): bool
+    public function exists(string $field, mixed $value, mixed $except = null): bool
     {
-        $sql = "SELECT COUNT(id) FROM {$this->table} WHERE $field = ?";
+        $sql = "SELECT COUNT(id) FROM {$this->table} WHERE {$field} = ?";
         $params = [$value];
 
         if ($except !== null) {
@@ -52,8 +52,8 @@ abstract class Table {
         $stmt = $this->pdo->prepare("DELETE FROM {$this->table} WHERE id = ?");
         $deleted = $stmt->execute([$id]);
 
-        if ($deleted === false) {
-            throw new Exception("Impossible de supprimer l'enregistrement $id");
+        if (!$deleted) {
+            throw new Exception("Impossible de supprimer l'enregistrement {$id}");
         }
     }
 

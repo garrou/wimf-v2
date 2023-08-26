@@ -17,7 +17,8 @@ class User {
         $this->password = null;
     }
 
-    public static function initialize(string $username, string $password): self {
+    public static function initialize(string $username, string $password): self 
+    {
         $instance = new self();
         $instance->id = uniqid();
         $instance->username = $username;

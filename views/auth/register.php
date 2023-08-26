@@ -14,9 +14,9 @@ $errors = [];
 
 if (!empty($_POST['username']) && !empty($_POST['password']) && !empty($_POST['confirm'])) {
     $table = new UserTable(Connection::getPDO());
-    $validator = (new UserValidator($_POST))->userRegistration($table, $_POST['username']);
+    $validator = new UserValidator($_POST);
 
-    if ($validator->getIsValid()) {
+    if ($validator->isValidRegister($table)) {
         ObjectHelper::hydrate($dto, $_POST, ['username', 'password', 'confirm']);
         $table->create($dto->toUser());
         header('Location: ' . $router->url('login'));

@@ -43,7 +43,7 @@ class Router
         $match = $this->router->match();
         $router = $this;
 
-        if ($match === false) {
+        if (!$match) {
             ob_start();
             require $this->view_path . DIRECTORY_SEPARATOR . '404.php';
             $content = ob_get_clean();
