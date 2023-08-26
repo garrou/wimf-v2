@@ -8,6 +8,9 @@ use App\Html\Form;
 use App\Table\UserTable;
 use App\Validators\UserValidator;
 
+if (Auth::isConnected()) {
+    header('Location: ' . $router->url('categories'));
+}
 $title = 'Créer un compte';
 $dto = new UserRegistration();
 $errors = [];
@@ -25,12 +28,7 @@ if (!empty($_POST['username']) && !empty($_POST['password']) && !empty($_POST['c
         $errors = $validator->getErrors();
     }
 }
-
 $form = new Form($dto, $errors);
-
-if (Auth::isConnected()) {
-    header('Location: ' . $router->url('categories'));
-}
 ?>
 
 <h1 class="font-weight-normal text-center">Créer un compte</h1>

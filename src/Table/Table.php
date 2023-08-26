@@ -22,20 +22,20 @@ abstract class Table {
 
     public function find(mixed $id)
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM {$this->table} where id = :id");
+        $stmt = $this->pdo->prepare("SELECT * FROM {$this->table} WHERE id = :id");
         $stmt->execute(['id' => $id]);
         $stmt->setFetchMode(PDO::FETCH_CLASS, $this->class);
         $result = $stmt->fetch();
 
         if (!$result) {
-            throw new Exception("Aucune donnée trouvée");
+            throw new Exception("Aucune donnée trouvée dans la table {$this->table}");
         }
         return $result;
     }
 
     public function exists(string $field, mixed $value, mixed $except = null): bool
     {
-        $sql = "SELECT COUNT(id) FROM {$this->table} WHERE {$field} = ?";
+        $sql = "SELECT COUNT(id) FROM {$this->table} WHERE $field = ?";
         $params = [$value];
 
         if ($except !== null) {
@@ -53,7 +53,7 @@ abstract class Table {
         $deleted = $stmt->execute([$id]);
 
         if (!$deleted) {
-            throw new Exception("Impossible de supprimer l'enregistrement {$id}");
+            throw new Exception("Impossible de supprimer l'enregistrement $id dans la table {$this->table}");
         }
     }
 

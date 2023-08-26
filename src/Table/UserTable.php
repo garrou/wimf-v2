@@ -17,7 +17,8 @@ class UserTable extends Table {
     {
         $stmt = $this->pdo->prepare("SELECT * FROM {$this->table} WHERE username = :username");
         $stmt->execute(['username' => $username]);
-        $result = $stmt->fetchObject($this->class);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, $this->class);
+        $result = $stmt->fetch();
 
         if (!$result) {
             throw new Exception("L'utilisateur n'est pas inscrit");

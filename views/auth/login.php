@@ -6,6 +6,9 @@ use App\Html\Form;
 use App\Models\User;
 use App\Table\UserTable;
 
+if (Auth::isConnected()) {
+    header('Location: ' . $router->url('categories'));
+}
 $title = 'Se connecter';
 $user = new User();
 $errors = [];
@@ -27,17 +30,11 @@ if (!empty($_POST)) {
                 exit();
             }
         } catch (Exception $e) {
-            var_dump($e);
             $errors['password'] = 'Identifiant ou mot de passe incorrect';
         }
     }
 }
-
 $form = new Form($user, $errors);
-
-if (Auth::isConnected()) {
-    header('Location: ' . $router->url('categories'));
-}
 ?>
 
 <?php if (isset($_GET['forbidden'])) : ?>

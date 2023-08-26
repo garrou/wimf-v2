@@ -14,6 +14,19 @@ CREATE TABLE categories (
     PRIMARY KEY(id)
 );
 
+INSERT INTO categories (name, picture)
+VALUES 
+('Viandes', 'img/meat.png'),
+('Légumes', 'img/vegetables.png'),
+('Poissons', 'img/fish.png'),
+('Glaces', 'img/ice_cream.png'),
+('Condiments', 'img/spices.png'),
+('Plats cuisinés', 'img/food.png'),
+('Pains', 'img/bread.png'),
+('Desserts', 'img/dessert.png'),
+('Produits laitiers', 'img/milk.png'),
+('Fruits', 'img/fruits.png');
+
 CREATE TABLE foods (
     id SERIAL,
     name VARCHAR(255) NOT NULL,

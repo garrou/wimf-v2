@@ -26,7 +26,7 @@ class Form {
         return <<<HTML
             <div class="form-group mt-3">
                 <label for="field$key" class="font-weight-bold">$label</label>
-                <input type="$type" id="field{$key}" class="{$this->getInputClass($key)} " name="$key" value="$value" {$required}>
+                <input type="$type" id="field{$key}" class="{$this->getInputClass($key)} " name="$key" value="$value" $required>
                 {$this->getErrorFeedback($key)}
             </div>
         HTML;

@@ -2,14 +2,13 @@
 <html lang="fr">
 
 <?php
-
 use App\Auth;
 ?>
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title><?php $title ?? 'WIMF' ?></title>
+    <title><?= $title ?? 'WIMF' ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 </head>
 
@@ -25,10 +24,13 @@ use App\Auth;
             <ul class="navbar-nav">
                 <?php if (Auth::isConnected() && !empty($_SESSION)) : ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?= $router->url('categories') ?>">Profil</a>
+                        <a class="nav-link" href="<?= $router->url('categories') ?>">Catégories</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?= $router->url('foods') ?>">Articles</a>
+                        <a class="nav-link" href="<?= $router->url('foods') ?>">Aliments</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= $router->url('profile') ?>">Profil</a>
                     </li>
                     <li class="nav-item">
                         <form action="<?= $router->url('logout') ?>" method="POST" style="display:inline">

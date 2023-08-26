@@ -4,18 +4,11 @@ namespace App\Models;
 
 class User {
 
-    private ?string $id;
+    private ?string $id = null;
 
-    private ?string $username;
+    private ?string $username = null;
 
-    private ?string $password;
-
-    public function __construct()
-    {
-        $this->id = null;
-        $this->username = null;
-        $this->password = null;
-    }
+    private ?string $password = null;
 
     public static function initialize(string $username, string $password): self 
     {
