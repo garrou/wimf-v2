@@ -32,9 +32,9 @@ CREATE TABLE foods (
     name VARCHAR(255) NOT NULL,
     quantity INTEGER NOT NULL,
     details VARCHAR(1000),
-    user_id VARCHAR(50),
-    category INTEGER,
-    FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE,
+    uid VARCHAR(50) NOT NULL,
+    category INTEGER NOT NULL,
+    FOREIGN KEY(uid) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY(category) REFERENCES categories(id) ON DELETE CASCADE,
     PRIMARY KEY(id)
 );

@@ -35,7 +35,7 @@ abstract class Table {
 
     public function exists(string $field, mixed $value, mixed $except = null): bool
     {
-        $sql = "SELECT COUNT(id) FROM {$this->table} WHERE $field = ?";
+        $sql = "SELECT COUNT(*) FROM {$this->table} WHERE $field = ?";
         $params = [$value];
 
         if ($except !== null) {

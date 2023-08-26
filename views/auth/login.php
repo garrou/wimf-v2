@@ -13,7 +13,8 @@ $title = 'Se connecter';
 $user = new User();
 $errors = [];
 
-if (!empty($_POST)) {
+if (!empty($_POST)) 
+{
     $user->setUsername($_POST['username'])->setPassword($_POST['password']);
     $errors['password'] = 'Identifiant ou mot de passe incorrect';
 

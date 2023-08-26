@@ -5,24 +5,25 @@ namespace App\Html;
 use DateTimeInterface;
 use App\Helpers\StringHelper;
 
-class Form {
+class Form
+{
 
     private mixed $data;
 
     private array $errors;
-    
+
     public function __construct(mixed $data, array $errors)
     {
         $this->data = $data;
         $this->errors = $errors;
     }
-    
+
     public function input(string $key, string $label): string
     {
         $value = $this->getValue($key);
-        $required = $key === 'link' ? '' : 'required';
-        $type = $key === 'password' || $key === 'confirm' ? 'password' : 'text';
-        
+        $required = $this->getRequired($key);
+        $type = $this->getType($key);
+
         return <<<HTML
             <div class="form-group mt-3">
                 <label for="field$key" class="font-weight-bold">$label</label>
@@ -31,11 +32,11 @@ class Form {
             </div>
         HTML;
     }
-    
+
     public function textarea(string $key, string $label): string
     {
         $value = $this->getValue($key);
-        
+
         return <<<HTML
             <div class="form-group">
                 <label for="field$key" class="font-weight-bold">$label</label>
@@ -44,7 +45,25 @@ class Form {
             </div>
         HTML;
     }
-    
+
+    private function getRequired(string $key): ?string
+    {
+        if ($key === 'link' || $key === 'details' || $key === 'categoryId') {
+            return '';
+        }
+        return 'required';
+    }
+
+    private function getType(string $key): ?string
+    {
+        if ($key === 'password' || $key === 'confirm') {
+            return 'password';
+        } else if ($key === 'quantity') {
+            return 'number';
+        }
+        return 'text';
+    }
+
     private function getValue(string $key): ?string
     {
         if (is_array($this->data)) {
@@ -58,17 +77,17 @@ class Form {
         }
         return $value;
     }
-    
+
     private function getInputClass(string $key): string
     {
         $class = 'form-control';
-        
+
         if (isset($this->errors[$key])) {
             $class .= ' is-invalid';
         }
         return $class;
     }
-    
+
     private function getErrorFeedback(string $key): string
     {
         if (isset($this->errors[$key])) {

@@ -13,6 +13,7 @@ $router
 
     ->get('/foods', '/foods/index', 'foods')
     ->get('/foods/[i:id]', '/foods/show', 'food')
+    ->match('/foods/new', '/foods/new', 'newFood')
 
     ->get('/profile', '/profile/index', 'profile')
 

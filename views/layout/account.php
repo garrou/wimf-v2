@@ -14,7 +14,7 @@ use App\Auth;
 
 <body class="container d-flex flex-column">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a href="<?= $router->url('home') ?>" class="navbar-brand"><?= $logo ?? 'WIMF' ?></a>
+        <a href="<?= $router->url('categories') ?>" class="navbar-brand"><?= $logo ?? 'WIMF' ?></a>
         
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#reponsiveNav" aria-controls="reponsiveNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>

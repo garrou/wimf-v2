@@ -9,7 +9,7 @@ class ObjectHelper
     {
         foreach ($fields as $field) {
             $method = StringHelper::toCamel('set', $field);
-
+            
             if (method_exists($object, $method)) {
                 $object->$method($data[$field]);
             }

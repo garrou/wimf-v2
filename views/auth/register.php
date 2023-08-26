@@ -15,7 +15,8 @@ $title = 'Créer un compte';
 $dto = new UserRegistration();
 $errors = [];
 
-if (!empty($_POST['username']) && !empty($_POST['password']) && !empty($_POST['confirm'])) {
+if (!empty($_POST['username']) && !empty($_POST['password']) && !empty($_POST['confirm'])) 
+{
     $table = new UserTable(Connection::getPDO());
     $validator = new UserValidator($_POST);
 
