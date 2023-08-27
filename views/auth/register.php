@@ -1,7 +1,6 @@
 <?php
 
 use App\Auth;
-use App\Connection;
 use App\Dto\UserRegistration;
 use App\Helpers\ObjectHelper;
 use App\Html\Form;
@@ -17,7 +16,7 @@ $errors = [];
 
 if (!empty($_POST['username']) && !empty($_POST['password']) && !empty($_POST['confirm'])) 
 {
-    $table = new UserTable(Connection::getPDO());
+    $table = new UserTable();
     $validator = new UserValidator($_POST);
 
     if ($validator->isValidRegister($table)) {

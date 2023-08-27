@@ -1,14 +1,12 @@
 <?php
 
 use App\Auth;
-use App\Connection;
 use App\Table\FoodTable;
 
-if (!Auth::isConnected()) {
-    header('Location: ' . $router->url('login'));
-}
+Auth::check();
+
 $title = 'Mes aliments';
-$foods = (new FoodTable(Connection::getPDO()))->all();
+$foods = (new FoodTable())->all();
 ?>
 
 <a href="<?= $router->url('newFood') ?>" class="btn btn-primary mb-3">Ajouter un aliment</a>

@@ -3,12 +3,11 @@
 namespace App\Table;
 
 use App\Models\Category;
-use PDO;
 
 class CategoryTable extends Table {
 
-    public function __construct(PDO $pdo)
+    public function __construct()
     {
-        parent::__construct($pdo, 'categories', Category::class);
+        parent::__construct('categories', Category::class);
     }
 }

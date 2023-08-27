@@ -41,7 +41,7 @@ use App\Auth;
             </ul>
         </div>
     </nav>
-    <div class="mt-4">
+    <div class="mt-3">
         <?= $content ?>
     </div>
 

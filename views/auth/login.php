@@ -1,7 +1,6 @@
 <?php
 
 use App\Auth;
-use App\Connection;
 use App\Html\Form;
 use App\Models\User;
 use App\Table\UserTable;
@@ -19,10 +18,9 @@ if (!empty($_POST))
     $errors['password'] = 'Identifiant ou mot de passe incorrect';
 
     if (!empty($user->getUsername()) && !empty($user->getPassword())) {
-        $table = new UserTable(Connection::getPDO());
 
         try {
-            $userFound = $table->findByUsername($user->getUsername());
+            $userFound = (new UserTable())->findByUsername($user->getUsername());
 
             if (password_verify($user->getPassword(), $userFound->getPassword())) {
                 session_start();

@@ -2,6 +2,7 @@
 
 namespace App\Table;
 
+use App\Connection;
 use PDO;
 use Exception;
 
@@ -13,9 +14,9 @@ abstract class Table {
 
     protected mixed $class;
 
-    public function __construct(PDO $pdo, string $table, string $class)
+    public function __construct(string $table, string $class)
     {
-        $this->pdo = $pdo;
+        $this->pdo = Connection::getPDO();
         $this->table = $table;
         $this->class = $class;
     }

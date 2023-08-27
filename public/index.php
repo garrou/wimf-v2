@@ -12,7 +12,7 @@ $router
     ->get('/categories/[i:id]', '/categories/show', 'category')
 
     ->get('/foods', '/foods/index', 'foods')
-    ->get('/foods/[i:id]', '/foods/show', 'food')
+    ->match('/foods/[i:id]', '/foods/edit', 'edit')
     ->match('/foods/new', '/foods/new', 'newFood')
 
     ->get('/profile', '/profile/index', 'profile')

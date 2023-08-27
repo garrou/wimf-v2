@@ -1,14 +1,12 @@
 <?php
 
 use App\Auth;
-use App\Connection;
 use App\Table\CategoryTable;
 
-if (!Auth::isConnected()) {
-    header('Location: ' . $router->url('login'));
-}
+Auth::check();
+
 $title = 'Catégories';
-$categories = (new CategoryTable(Connection::getPDO()))->all();
+$categories = (new CategoryTable())->all();
 ?>
 
 <div class="row">

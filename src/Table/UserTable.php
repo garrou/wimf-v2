@@ -8,9 +8,9 @@ use Exception;
 
 class UserTable extends Table {
 
-    public function __construct(PDO $pdo)
+    public function __construct()
     {
-        parent::__construct($pdo, 'users', User::class);
+        parent::__construct('users', User::class);
     }
 
     public function findByUsername(string $username): User
