@@ -21,7 +21,7 @@ $categories = (new CategoryTable())->all();
 
     <button class="btn btn-primary mt-3">
         <?php if ($food->getId() !== null) : ?>
-            Modifier
+            Enregistrer
         <?php else : ?>
             Ajouter
         <?php endif; ?>

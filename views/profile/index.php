@@ -5,7 +5,7 @@ use App\Helpers\SessionHelper;
 use App\Table\UserTable;
 
 Auth::guard();
-
+$title = 'Profil';
 $user = (new UserTable())->find(SessionHelper::extractUserId());
 ?>
 

@@ -10,7 +10,7 @@ $cid = (int) $params['id'];
 $category = (new CategoryTable())->find($cid);
 $foods = (new FoodTable())->findAllByCid($cid);
 $count = count($foods);
-$title = "{$category->getName()} : $count";
+$title = $category->getName();
 ?>
 
 <a href="<?= $router->url('new_food') ?>" class="btn btn-primary mb-3">

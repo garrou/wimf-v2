@@ -9,12 +9,12 @@ use App\Validators\FoodValidator;
 
 Auth::guard();
 
-$id = (int) $params['id'];
 $table = new FoodTable();
-$food = $table->findById($id);
+$food = $table->findById($params['id']);
 $errors = [];
 $form = new Form($food, $errors);
-$title = "Modifier {$food->getName()}";
+$name = strtolower($food->getName());
+$title = "Modifier $name";
 
 if (!empty($_POST)) 
 {

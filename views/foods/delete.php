@@ -5,8 +5,7 @@ use App\Table\FoodTable;
 
 Auth::guard();
 
-$id = (int) $params['id'];
-(new FoodTable())->deleteById($id);
+(new FoodTable())->deleteById($params['id']);
 header('Location: ' . $router->url('foods') . '?deleted=1');
 exit();
 ?>

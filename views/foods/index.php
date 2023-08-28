@@ -7,7 +7,7 @@ Auth::guard();
 
 $foods = (new FoodTable())->findAll();
 $count = count($foods);
-$title = "Mes aliments : $count";
+$title = 'Mes aliments';
 ?>
 
 <?php if (isset($_GET['deleted'])) : ?>

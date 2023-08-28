@@ -52,13 +52,13 @@ class UserTable extends Table {
             WHERE id = :id
         ");
 
-        $created = $stmt->execute([
+        $updated = $stmt->execute([
             'id' => $id,
             'username' => $user->getUsername(),
             'password' => password_hash($user->getPassword(), PASSWORD_BCRYPT),
         ]);
 
-        if (!$created) {
+        if (!$updated) {
             throw new Exception("Impossible de créer l'utilisateur");
         }
     }
