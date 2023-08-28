@@ -37,9 +37,11 @@ $form = new Form($user, $errors);
 ?>
 
 <?php if (isset($_GET['forbidden'])) : ?>
-    <div class="alert alert-danger">
-        Vous devez vous connecter pour accéder à cette page
-    </div>
+    <div class="alert alert-danger">Vous devez vous connecter pour accéder à cette page</div>
+<?php endif; ?>
+
+<?php if (isset($_GET['registed'])) : ?>
+    <div class="alert alert-success">Compte créé</div>
 <?php endif; ?>
 
 <h1 class="font-weight-normal text-center">Se connecter</h1>

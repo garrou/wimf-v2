@@ -13,7 +13,8 @@ $router
 
     ->get('/foods', '/foods/index', 'foods')
     ->match('/foods/[i:id]', '/foods/edit', 'edit')
-    ->match('/foods/new', '/foods/new', 'newFood')
+    ->match('/foods/new', '/foods/new', 'new_food')
+    ->post('/foods/[i:id]/delete', '/foods/delete', 'delete_food')
 
     ->get('/profile', '/profile/index', 'profile')
 

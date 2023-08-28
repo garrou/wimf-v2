@@ -23,7 +23,7 @@ if (!empty($_POST))
     if ($validator->isValidFood($table)) {
         ObjectHelper::hydrate($food, $_POST, ['name', 'quantity', 'details', 'category']);
         (new FoodTable($pdo))->create($food);
-        header('Location: ' . $router->url('foods'));
+        header('Location: ' . $router->url('foods') . '?created=1');
     } else {
         $errors = $validator->getErrors();
     }

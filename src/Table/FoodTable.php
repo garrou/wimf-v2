@@ -55,9 +55,14 @@ class FoodTable extends Table {
         }
     }
 
-    public function findByCategory(int $cid): array
+    public function findByCategory(int $cid, mixed $order = null): array
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM {$this->table} WHERE category = ?");
+        $sql = "SELECT * FROM {$this->table} WHERE category = ?";
+
+        if ($order) {
+            $sql .= " ORDER BY $order DESC";
+        }
+        $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$cid]);
         $stmt->setFetchMode(PDO::FETCH_CLASS, $this->class);
         $result = $stmt->fetchAll();

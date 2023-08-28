@@ -34,6 +34,19 @@ abstract class Table {
         return $result;
     }
 
+    public function findByIdAndUid(mixed $id, string $uid)
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM {$this->table} WHERE id = :id AND uid = :uid");
+        $stmt->execute(['id' => $id, 'uid' => $uid]);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, $this->class);
+        $result = $stmt->fetch();
+
+        if (!$result) {
+            throw new Exception("Aucune donnée trouvée dans la table {$this->table}");
+        }
+        return $result;
+    }
+
     public function exists(string $field, mixed $value, mixed $except = null): bool
     {
         $sql = "SELECT COUNT(*) FROM {$this->table} WHERE $field = ?";
@@ -48,19 +61,23 @@ abstract class Table {
         return (int) $stmt->fetch(PDO::FETCH_NUM)[0] > 0;
     }
 
-    public function delete(mixed $id): void
+    public function deleteByIdAndUid(mixed $id, string $uid): void
     {
-        $stmt = $this->pdo->prepare("DELETE FROM {$this->table} WHERE id = ?");
-        $deleted = $stmt->execute([$id]);
+        $stmt = $this->pdo->prepare("DELETE FROM {$this->table} WHERE id = :id AND uid = :uid");
+        $deleted = $stmt->execute(['id' => $id, 'uid' =>$uid]);
 
         if (!$deleted) {
             throw new Exception("Impossible de supprimer l'enregistrement $id dans la table {$this->table}");
         }
     }
 
-    public function all(): array
+    public function all(mixed $order = null): array
     {
         $sql = "SELECT * FROM {$this->table}";
+
+        if ($order) {
+            $sql .= " ORDER BY $order DESC";
+        }
         return $this->pdo->query($sql, PDO::FETCH_CLASS, $this->class)->fetchAll();
     }
 }

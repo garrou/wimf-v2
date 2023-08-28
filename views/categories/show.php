@@ -12,7 +12,7 @@ $foods = (new FoodTable())->findByCategory($cid);
 $title = $category->getName();
 ?>
 
-<a href="<?= $router->url('newFood') ?>" class="btn btn-primary mb-3">
+<a href="<?= $router->url('new_food') ?>" class="btn btn-primary mb-3">
     Ajouter dans <?= strtolower($category->getName()) ?>
 </a>
 

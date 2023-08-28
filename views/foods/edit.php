@@ -11,7 +11,7 @@ Auth::check();
 
 $id = (int) $params['id'];
 $table = new FoodTable();
-$food = $table->find($id);
+$food = $table->findByIdAndUid($id, $_SESSION['SESSION']);
 $errors = [];
 $form = new Form($food, $errors);
 $title = "Modifier {$food->getName()}";
@@ -23,7 +23,7 @@ if (!empty($_POST))
     if ($validator->isValidFood(new CategoryTable())) {
         ObjectHelper::hydrate($food, $_POST, ['name', 'quantity', 'details', 'category']);
         $table->update($food);
-        header('Location: ' . $router->url('foods'));
+        header('Location: ' . $router->url('foods') . '?updated=1');
     } else {
         $errors = $validator->getErrors();
     }

@@ -22,7 +22,7 @@ if (!empty($_POST['username']) && !empty($_POST['password']) && !empty($_POST['c
     if ($validator->isValidRegister($table)) {
         ObjectHelper::hydrate($dto, $_POST, ['username', 'password', 'confirm']);
         $table->create($dto->toUser());
-        header('Location: ' . $router->url('login'));
+        header('Location: ' . $router->url('login') . '?registed=1');
         exit();
     } else {
         $errors = $validator->getErrors();
