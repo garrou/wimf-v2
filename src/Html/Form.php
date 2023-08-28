@@ -7,7 +7,6 @@ use App\Helpers\StringHelper;
 
 class Form
 {
-
     private mixed $data;
 
     private array $errors;

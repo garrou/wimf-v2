@@ -3,6 +3,9 @@
 
 <?php
 use App\Auth;
+use App\Html\Nav;
+
+$nav = new Nav($router, $view);
 ?>
 
 <head>
@@ -24,15 +27,10 @@ use App\Auth;
         <div class="collapse navbar-collapse" id="reponsiveNav">
             <ul class="navbar-nav">
                 <?php if (Auth::isConnected() && !empty($_SESSION)) : ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="<?= $router->url('categories') ?>">Catégories</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="<?= $router->url('foods') ?>">Aliments</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="<?= $router->url('profile') ?>">Profil</a>
-                    </li>
+                    <?= $nav->link('Catégories', 'categories') ?>
+                    <?= $nav->link('Aliments', 'foods') ?>
+                    <?= $nav->link('Profil', 'profile') ?>
+                    
                     <li class="nav-item">
                         <form action="<?= $router->url('logout') ?>" method="POST" style="display:inline">
                             <button type="submit" class="nav-link" style="background:transparent; border:none;">Se déconnecter</button>
