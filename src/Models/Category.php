@@ -10,6 +10,8 @@ class Category {
 
     private ?string $picture = null;
 
+    private ?int $total = null;
+
     public function getId(): ?int 
     {
         return $this->id;
@@ -23,5 +25,10 @@ class Category {
     public function getPicture(): ?string 
     {
         return $this->picture;
+    }
+
+    public function getTotal(): ?int
+    {
+        return $this->total;
     }
 }

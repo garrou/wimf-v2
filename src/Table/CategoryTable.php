@@ -4,6 +4,7 @@ namespace App\Table;
 
 use App\Helpers\SessionHelper;
 use App\Models\Category;
+use PDO;
 
 class CategoryTable extends Table {
 
@@ -15,14 +16,15 @@ class CategoryTable extends Table {
     public function findAll(): array 
     {
         $stmt = $this->pdo->prepare("
-            SELECT categories.id AS id, categories.name, categories.picture, COUNT(*) AS total
+            SELECT categories.id, categories.name, categories.picture, COUNT(foods.id) AS total
             FROM categories
-            JOIN foods ON categories.id = foods.category
-            JOIN users ON users.id = foods.uid
-            WHERE users.id = :uid
+            LEFT JOIN users ON users.id = :uid
+            LEFT JOIN foods ON categories.id = foods.category AND users.id = foods.uid
             GROUP BY categories.id
+            ORDER BY categories.id;
         ");
         $stmt->execute(['uid' => SessionHelper::extractUserId()]);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, $this->class);
         $result = $stmt->fetchAll();
         return $result ? $result : [];
     }

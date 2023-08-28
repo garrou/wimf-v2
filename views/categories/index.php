@@ -2,7 +2,6 @@
 
 use App\Auth;
 use App\Table\CategoryTable;
-use App\Table\FoodTable;
 
 Auth::guard();
 
