@@ -3,15 +3,16 @@
 namespace App;
 
 use App\Exceptions\ForbiddenException;
+use App\Helpers\SessionHelper;
 
 class Auth {
     
-    public static function check(): void
+    public static function guard(): void
     {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
-        if (!isset($_SESSION['SESSION'])) {
+        if (SessionHelper::extractUserId() === null) {
             throw new ForbiddenException();
         }
     }
@@ -21,6 +22,6 @@ class Auth {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
-        return isset($_SESSION['SESSION']);
+        return SessionHelper::extractUserId() !== null;
     }
 }

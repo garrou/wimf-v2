@@ -17,6 +17,8 @@ $router
     ->post('/foods/[i:id]/delete', '/foods/delete', 'delete_food')
 
     ->get('/profile', '/profile/index', 'profile')
+    ->match('/profile/edit_username', '/profile/edit_username', 'edit_profile_username')
+    ->match('/profile/edit_password', '/profile/edit_password', 'edit_profile_pass')
 
     ->match('/login', '/auth/login', 'login')
     ->match('/register', '/auth/register', 'register')

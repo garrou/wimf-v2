@@ -2,6 +2,7 @@
 
 namespace App\Table;
 
+use App\Helpers\SessionHelper;
 use App\Models\Food;
 use Exception;
 use PDO;
@@ -25,7 +26,7 @@ class FoodTable extends Table {
             'quantity' => $food->getQuantity(),
             'details' => $food->getDetails(),
             'category' => $food->getCategory(),
-            'uid' => $_SESSION['SESSION'],
+            'uid' => SessionHelper::extractUserId(),
         ]);
 
         if (!$created) {
@@ -47,7 +48,7 @@ class FoodTable extends Table {
             'quantity' => $food->getQuantity(),
             'details' => $food->getDetails(),
             'category' => $food->getCategory(),
-            'uid' => $_SESSION['SESSION'],
+            'uid' => SessionHelper::extractUserId(),
         ]);
 
         if (!$updated) {
@@ -55,16 +56,62 @@ class FoodTable extends Table {
         }
     }
 
-    public function findByCategory(int $cid, mixed $order = null): array
+    public function findAll(): array
     {
-        $sql = "SELECT * FROM {$this->table} WHERE category = ?";
-
-        if ($order) {
-            $sql .= " ORDER BY $order DESC";
-        }
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([$cid]);
+        $stmt = $this->pdo->prepare("SELECT * FROM {$this->table} WHERE uid = :uid ORDER BY id DESC");
+        $stmt->execute(['uid' => SessionHelper::extractUserId()]);
         $stmt->setFetchMode(PDO::FETCH_CLASS, $this->class);
+        $result = $stmt->fetchAll();
+
+        if (!$result) {
+            throw new Exception("Aucune donnée trouvée dans la table {$this->table}");
+        }
+        return $result;
+    }
+
+    public function findAllByCid(int $cid): array
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM {$this->table} WHERE uid = :uid AND category = :category ORDER BY id DESC");
+        $stmt->execute(['uid' => SessionHelper::extractUserId(), 'category' => $cid]);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, $this->class);
+        $result = $stmt->fetchAll();
+        return $result ? $result : [];
+    }
+
+    public function findById(int $id): Food
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM {$this->table} WHERE id = :id AND uid = :uid");
+        $stmt->execute(['id' => $id, 'uid' => SessionHelper::extractUserId()]);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, $this->class);
+        $result = $stmt->fetch();
+
+        if (!$result) {
+            throw new Exception("Aucune donnée trouvée dans la table {$this->table}");
+        }
+        return $result;
+    }
+
+    public function deleteById(int $id): void
+    {
+        $stmt = $this->pdo->prepare("DELETE FROM {$this->table} WHERE id = :id AND uid = :uid");
+        $deleted = $stmt->execute(['id' => $id, 'uid' => SessionHelper::extractUserId()]);
+
+        if (!$deleted) {
+            throw new Exception("Impossible de supprimer l'enregistrement $id dans la table {$this->table}");
+        }
+    }
+
+    public function resume(): array 
+    {
+        $stmt = $this->pdo->prepare("
+            SELECT categories.name AS category_name, COUNT(*) AS total
+            FROM foods
+            JOIN categories ON foods.category = categories.id
+            JOIN users ON users.id = foods.uid
+            WHERE users.id = :uid
+            GROUP BY categories.id
+        ");
+        $stmt->execute(['uid' => SessionHelper::extractUserId()]);
         $result = $stmt->fetchAll();
         return $result ? $result : [];
     }

@@ -8,7 +8,7 @@ use App\Table\CategoryTable;
 use App\Table\FoodTable;
 use App\Validators\FoodValidator;
 
-Auth::check();
+Auth::guard();
 
 $title = 'Ajouter un aliment';
 $table = new CategoryTable();

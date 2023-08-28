@@ -3,7 +3,7 @@
 use App\Auth;
 use App\Table\CategoryTable;
 
-Auth::check();
+Auth::guard();
 
 $title = 'Catégories';
 $categories = (new CategoryTable())->all();

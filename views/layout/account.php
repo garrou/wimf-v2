@@ -26,7 +26,7 @@ $nav = new Nav($router, $view);
 
         <div class="collapse navbar-collapse" id="reponsiveNav">
             <ul class="navbar-nav">
-                <?php if (Auth::isConnected() && !empty($_SESSION)) : ?>
+                <?php if (Auth::isConnected()) : ?>
                     <?= $nav->link('Catégories', 'categories') ?>
                     <?= $nav->link('Aliments', 'foods') ?>
                     <?= $nav->link('Profil', 'profile') ?>

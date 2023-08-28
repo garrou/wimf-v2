@@ -3,10 +3,10 @@
 use App\Auth;
 use App\Table\FoodTable;
 
-Auth::check();
+Auth::guard();
 
 $id = (int) $params['id'];
-(new FoodTable())->deleteByIdAndUid($id, $_SESSION['SESSION']);
-header('Location: ' . $router->url('foods') . '?delete=1');
+(new FoodTable())->deleteById($id);
+header('Location: ' . $router->url('foods') . '?deleted=1');
 exit();
 ?>

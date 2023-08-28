@@ -3,13 +3,14 @@
 use App\Auth;
 use App\Table\FoodTable;
 
-Auth::check();
+Auth::guard();
 
-$title = 'Mes aliments';
-$foods = (new FoodTable())->all('id');
+$foods = (new FoodTable())->findAll();
+$count = count($foods);
+$title = "Mes aliments : $count";
 ?>
 
-<?php if (isset($_GET['delete'])) : ?>
+<?php if (isset($_GET['deleted'])) : ?>
     <div class="alert alert-success">
         Aliment supprimé
     </div>
@@ -28,6 +29,10 @@ $foods = (new FoodTable())->all('id');
 <?php endif; ?>
 
 <a href="<?= $router->url('new_food') ?>" class="btn btn-primary mb-3">Ajouter un aliment</a>
+
+<div class="card mb-3">
+  <div class="card-body"><?= $count ?> aliment<?= $count > 1 ? 's' : '' ?></div>
+</div>
 
 <table class="table table-striped">
     <?php foreach ($foods as $food): ?>

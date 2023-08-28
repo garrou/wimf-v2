@@ -43,4 +43,23 @@ class UserTable extends Table {
             throw new Exception("Impossible de créer l'utilisateur");
         }
     }
+
+    public function update(User $user, string $id): void
+    {
+        $stmt = $this->pdo->prepare("
+            UPDATE {$this->table}
+            SET username = :username, password = :password
+            WHERE id = :id
+        ");
+
+        $created = $stmt->execute([
+            'id' => $id,
+            'username' => $user->getUsername(),
+            'password' => password_hash($user->getPassword(), PASSWORD_BCRYPT),
+        ]);
+
+        if (!$created) {
+            throw new Exception("Impossible de créer l'utilisateur");
+        }
+    }
 }

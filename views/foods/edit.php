@@ -7,11 +7,11 @@ use App\Table\CategoryTable;
 use App\Table\FoodTable;
 use App\Validators\FoodValidator;
 
-Auth::check();
+Auth::guard();
 
 $id = (int) $params['id'];
 $table = new FoodTable();
-$food = $table->findByIdAndUid($id, $_SESSION['SESSION']);
+$food = $table->findById($id);
 $errors = [];
 $form = new Form($food, $errors);
 $title = "Modifier {$food->getName()}";
