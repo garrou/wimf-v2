@@ -2,11 +2,12 @@
 
 use App\Auth;
 use App\Table\CategoryTable;
+use App\Table\FoodTable;
 
 Auth::guard();
 
 $title = 'Catégories';
-$categories = (new CategoryTable())->all();
+$categories = (new CategoryTable())->findAll();
 ?>
 
 <div class="row">

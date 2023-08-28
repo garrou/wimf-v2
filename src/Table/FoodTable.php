@@ -62,11 +62,7 @@ class FoodTable extends Table {
         $stmt->execute(['uid' => SessionHelper::extractUserId()]);
         $stmt->setFetchMode(PDO::FETCH_CLASS, $this->class);
         $result = $stmt->fetchAll();
-
-        if (!$result) {
-            throw new Exception("Aucune donnée trouvée dans la table {$this->table}");
-        }
-        return $result;
+        return $result ? $result : [];
     }
 
     public function findAllByCid(int $cid): array
@@ -99,20 +95,5 @@ class FoodTable extends Table {
         if (!$deleted) {
             throw new Exception("Impossible de supprimer l'enregistrement $id dans la table {$this->table}");
         }
-    }
-
-    public function resume(): array 
-    {
-        $stmt = $this->pdo->prepare("
-            SELECT categories.name AS category_name, COUNT(*) AS total
-            FROM foods
-            JOIN categories ON foods.category = categories.id
-            JOIN users ON users.id = foods.uid
-            WHERE users.id = :uid
-            GROUP BY categories.id
-        ");
-        $stmt->execute(['uid' => SessionHelper::extractUserId()]);
-        $result = $stmt->fetchAll();
-        return $result ? $result : [];
     }
 }
