@@ -14,7 +14,7 @@ $title = 'Créer un compte';
 $dto = new UserAuth();
 $errors = [];
 
-if (!empty($_POST['username']) && !empty($_POST['password']) && !empty($_POST['confirm'])) 
+if (!empty($_POST)) 
 {
     $table = new UserTable();
     $validator = new UserValidator($_POST);

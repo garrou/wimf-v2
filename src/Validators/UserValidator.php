@@ -29,8 +29,8 @@ class UserValidator extends Validator {
 
     public function isValidUpdate(UserTable $table): bool 
     {
-        if ($this->exists('username') && $this->exists('password') && $this->exists('confirm')) {
-            return $this->isValidRegister($table);
+        if ($this->isValidRegister($table)) {
+            return true;
         } else if ($this->exists('username')) {
             return $this->validateLength('username', self::MIN_USERNAME, self::MAX_USERNAME) &&  !$table->exists('username', $this->getDataByKey('username'));
         } else if ($this->exists('password') && $this->exists('confirm')) {

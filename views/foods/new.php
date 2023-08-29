@@ -14,7 +14,6 @@ $title = 'Ajouter un aliment';
 $table = new CategoryTable();
 $food = new Food();
 $errors = [];
-$form = new Form($food, $errors);
 
 if (!empty($_POST)) 
 {
@@ -28,5 +27,6 @@ if (!empty($_POST))
         $errors = $validator->getErrors();
     }
 }
+$form = new Form($food, $errors);
 require '_form.php';
 ?>

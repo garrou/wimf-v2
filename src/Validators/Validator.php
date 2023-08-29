@@ -30,7 +30,8 @@ abstract class Validator {
         $res = $len >= $min && $len <= $max;
 
         if (!$res) {
-            $errors[$field] = "Longueur invalide ($min, $max)";
+            $this->errors[$field] = "Longueur invalide ($min, $max)";
+            return false;
         } 
         return $res;
     }
@@ -40,23 +41,25 @@ abstract class Validator {
         $num = intval($this->data[$field]);
 
         if ($num === 0) {
-            $errors[$field] = "Champ invalide";
+            $this->errors[$field] = "Valeur invalide";
             return false;
         }
         $res = $num >= $min && $num <= $max;
 
         if (!$res) {
-            $errors[$field] = "Longueur invalide ($min, $max)";
+            $this->errors[$field] = "Longueur invalide ($min, $max)";
+            return false;
         } 
         return $res;
     }
 
     protected function exists(string $field): bool
     {
-        $res = isset($this->data[$field]) && !is_null($this->data[$field]);
+        $res = isset($this->data[$field]) && !empty($this->data[$field]);
 
         if (!$res) {
-            $errors[$field] = "Champ inexistant";
+            $this->errors[$field] = "Valeur invalide";
+            return false;
         } 
         return $res;
     }
@@ -66,7 +69,9 @@ abstract class Validator {
         $res = $this->data[$a] === $this->data[$b];
 
         if (!$res) {
-            $errors[$a] = "Champs différents";
+            $this->errors[$a] = "Valeurs différentes";
+            $this->errors[$b] = "Valeurs différentes";
+            return false;
         } 
         return $res;
     }

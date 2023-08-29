@@ -17,10 +17,10 @@ class Form
         $this->errors = $errors;
     }
 
-    public function input(string $key, string $label): string
+    public function input(string $key, string $label, bool $mandatory = true): string
     {
         $value = $this->getValue($key);
-        $required = $this->getRequired($key);
+        $required = $mandatory ? 'required': '';
         $type = $this->getType($key);
 
         return <<<HTML
@@ -43,14 +43,6 @@ class Form
                 {$this->getErrorFeedback($key)}
             </div>
         HTML;
-    }
-
-    private function getRequired(string $key): ?string
-    {
-        if ($key === 'link' || $key === 'details' || $key === 'categoryId') {
-            return '';
-        }
-        return 'required';
     }
 
     private function getType(string $key): ?string

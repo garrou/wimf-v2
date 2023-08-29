@@ -9,10 +9,9 @@ use App\Validators\FoodValidator;
 
 Auth::guard();
 
+$errors = [];
 $table = new FoodTable();
 $food = $table->findById($params['id']);
-$errors = [];
-$form = new Form($food, $errors);
 $name = strtolower($food->getName());
 $title = "Modifier $name";
 
@@ -28,5 +27,6 @@ if (!empty($_POST))
         $errors = $validator->getErrors();
     }
 }
+$form = new Form($food, $errors);
 require '_form.php';
 ?>
