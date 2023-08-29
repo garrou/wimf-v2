@@ -4,7 +4,7 @@ namespace App\Dto;
 
 use App\Models\User;
 
-class UserRegistration {
+class UserAuth {
 
     private ?string $username;
 

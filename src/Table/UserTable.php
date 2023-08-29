@@ -6,7 +6,8 @@ use App\Models\User;
 use PDO;
 use Exception;
 
-class UserTable extends Table {
+class UserTable extends Table
+{
 
     public function __construct()
     {
@@ -44,7 +45,7 @@ class UserTable extends Table {
         }
     }
 
-    public function update(User $user, string $id): void
+    public function update(User $user): void
     {
         $stmt = $this->pdo->prepare("
             UPDATE {$this->table}
@@ -53,13 +54,49 @@ class UserTable extends Table {
         ");
 
         $updated = $stmt->execute([
-            'id' => $id,
+            'id' => $_SESSION['SESSION'],
             'username' => $user->getUsername(),
             'password' => password_hash($user->getPassword(), PASSWORD_BCRYPT),
         ]);
 
         if (!$updated) {
-            throw new Exception("Impossible de créer l'utilisateur");
+            throw new Exception("Impossible de modifier l'utilisateur");
+        }
+    }
+
+    public function updateUsername(string $username): void
+    {
+        $stmt = $this->pdo->prepare("
+            UPDATE {$this->table}
+            SET username = :username
+            WHERE id = :id
+        ");
+
+        $updated = $stmt->execute([
+            'id' => $_SESSION['SESSION'],
+            'username' => $username
+        ]);
+
+        if (!$updated) {
+            throw new Exception("Impossible de modifier l'utilisateur");
+        }
+    }
+
+    public function updatePassword(string $password): void
+    {
+        $stmt = $this->pdo->prepare("
+            UPDATE {$this->table}
+            SET password = :password
+            WHERE id = :id
+        ");
+
+        $updated = $stmt->execute([
+            'id' => $_SESSION['SESSION'],
+            'password' => $password
+        ]);
+
+        if (!$updated) {
+            throw new Exception("Impossible de modifier l'utilisateur");
         }
     }
 }

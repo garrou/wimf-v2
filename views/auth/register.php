@@ -1,7 +1,7 @@
 <?php
 
 use App\Auth;
-use App\Dto\UserRegistration;
+use App\Dto\UserAuth;
 use App\Helpers\ObjectHelper;
 use App\Html\Form;
 use App\Table\UserTable;
@@ -11,7 +11,7 @@ if (Auth::isConnected()) {
     header('Location: ' . $router->url('categories'));
 }
 $title = 'Créer un compte';
-$dto = new UserRegistration();
+$dto = new UserAuth();
 $errors = [];
 
 if (!empty($_POST['username']) && !empty($_POST['password']) && !empty($_POST['confirm'])) 
